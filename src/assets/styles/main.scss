@@ -1,0 +1,39 @@
+// Main Styles Entry Point
+@use 'base';
+@use './utils/animations';
+@use './element-reset';
+@use './typography' as typography;
+@use './variables/colors' as colors;
+@use './variables/typography' as typography-vars;
+@use './variables/breakpoints' as breakpoints;
+@use './mixins' as mixins;
+
+@use './components/index' as components;
+@use './layout/index' as layout;
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: colors.$text-primary;
+  background-color: colors.$white;
+  line-height: 1.6;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}

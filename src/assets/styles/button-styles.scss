@@ -1,0 +1,109 @@
+@use './variables/_colors.scss' as colors;
+
+.app-button {
+  min-height: 48px;
+  padding: 0.75rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 500;
+  font-family: inherit;
+  outline: none;
+  border-radius: 0.75rem;
+  
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px -2px rgba(0, 0, 0, 0.15);
+  }
+  
+  &:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.1);
+  }
+}
+
+.el-button--primary {
+  --el-button-bg-color: #{colors.$primary};
+  --el-button-border-color: #{colors.$primary};
+  --el-button-hover-bg-color: #{colors.$primary-dark};
+  --el-button-hover-border-color: #{colors.$primary-dark};
+  --el-button-active-bg-color: #{colors.$primary-dark};
+  --el-button-active-border-color: #{colors.$primary-dark};
+  --el-button-text-color: #{colors.$white};
+  --el-button-hover-text-color: #{colors.$white};
+  --el-button-active-text-color: #{colors.$white};
+  font-weight: 600;
+  border-radius: 0.75rem; 
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  letter-spacing: 0.025em;
+}
+
+.el-button--success {
+  --el-button-bg-color: #{colors.$secondary};
+  --el-button-border-color: #{colors.$secondary};
+  --el-button-hover-bg-color: #{colors.$secondary-dark};
+  --el-button-hover-border-color: #{colors.$secondary-dark};
+  --el-button-active-bg-color: #{colors.$secondary-dark};
+  --el-button-active-border-color: #{colors.$secondary-dark};
+  --el-button-text-color: #{colors.$white};
+  --el-button-hover-text-color: #{colors.$white};
+  --el-button-active-text-color: #{colors.$white};
+  font-weight: 600;
+  border-radius: 0.75rem; 
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  letter-spacing: 0.025em;
+}
+
+.el-button--default {
+  --el-button-bg-color: #{colors.$gray-100};
+  --el-button-border-color: #{colors.$gray-300};
+  --el-button-hover-bg-color: #{colors.$gray-200};
+  --el-button-hover-border-color: #{colors.$gray-300};
+  --el-button-active-bg-color: #{colors.$gray-200};
+  --el-button-active-border-color: #{colors.$gray-300};
+  --el-button-text-color: #{colors.$text-secondary};
+  --el-button-hover-text-color: #{colors.$text-primary};
+  --el-button-active-text-color: #{colors.$text-primary};
+  font-weight: 600;
+  border-radius: 0.75rem; 
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  letter-spacing: 0.025em;
+}
+
+.el-button {
+  padding: 12px 24px; 
+  font-size: 1.05rem; 
+  box-shadow: colors.$shadow-sm;
+  min-width: 120px; 
+  height: auto; 
+  min-height: 48px; 
+  border-radius: 0.75rem !important; 
+  
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: colors.$shadow-md;
+  }
+  
+  &:active {
+    transform: translateY(0);
+    box-shadow: colors.$shadow-sm;
+  }
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to bottom, rgba(255,255,255,0.1), rgba(255,255,255,0));
+    border-radius: inherit;
+    pointer-events: none;
+  }
+}

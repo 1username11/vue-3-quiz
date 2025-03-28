@@ -1,0 +1,50 @@
+@use '../variables/colors' as colors;
+
+@mixin form-control {
+  display: block;
+  width: 100%;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: #333;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid #ced4da;
+  border-radius: 0.25rem;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  
+  &:focus {
+    border-color: colors.$primary;
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem rgba(colors.$primary, 0.25);
+  }
+  
+  &::placeholder {
+    color: #6c757d;
+    opacity: 1;
+  }
+  
+  &:disabled,
+  &[readonly] {
+    background-color: #e9ecef;
+    opacity: 1;
+  }
+}
+
+@mixin form-label {
+  display: inline-block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+}
+
+@mixin form-group {
+  margin-bottom: 1rem;
+}
+
+@mixin form-error {
+  display: block;
+  width: 100%;
+  margin-top: 0.25rem;
+  font-size: 0.875rem;
+  color: colors.$danger;
+}

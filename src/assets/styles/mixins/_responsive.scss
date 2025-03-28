@@ -1,0 +1,31 @@
+@use '../variables/breakpoints' as breakpoints;
+
+@mixin mobile {
+  @media (max-width: breakpoints.$screen-xs) {
+    @content;
+  }
+}
+
+@mixin tablet {
+  @media (max-width: breakpoints.$screen-md) {
+    @content;
+  }
+}
+
+@mixin desktop {
+  @media (max-width: breakpoints.$screen-lg) {
+    @content;
+  }
+}
+
+@mixin large-desktop {
+  @media (max-width: breakpoints.$screen-xl) {
+    @content;
+  }
+}
+
+@mixin touch-device {
+  @media (hover: none) {
+    @content;
+  }
+}

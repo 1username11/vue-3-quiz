@@ -1,0 +1,63 @@
+@use '../variables/colors' as colors;
+@use '../mixins/responsive' as responsive;
+
+.app {
+  &__container {
+    position: relative;
+    min-height: 100vh;
+    width: 100%;
+  }
+
+  &__overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.7);
+    background-image: url('/images/IMG_20250312_192903_840.png');
+    background-size: cover;
+    background-position: 60% 60%;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    z-index: 0;
+
+    @media (max-width: 1200px) {
+      background-image: none;
+      background-color: #ffffff;
+    }
+  }
+
+  &__content {
+    position: relative;
+    z-index: 1;
+    height: 100%;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    padding: 0 2rem;
+
+    @media (min-width: 1201px) {
+      margin-right: auto;
+    }
+
+    @media (max-width: 1200px) {
+      margin-left: auto;
+      margin-right: auto;
+      align-items: center;
+      justify-content: center;
+    }
+
+    @include responsive.desktop {
+      padding: 0 1.5rem;
+    }
+
+    @include responsive.tablet {
+      padding: 0 1rem;
+    }
+
+    @include responsive.mobile {
+      padding: 0 0.75rem;
+    }
+  }
+}

@@ -1,0 +1,23 @@
+@use '../mixins/responsive' as responsive;
+
+@mixin form-actions {
+  margin-top: 2.5rem;
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  
+  @include responsive.mobile {
+    flex-direction: column;
+  }
+}
+
+@mixin action-container {
+  margin-top: 2.5rem;
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  
+  @include responsive.mobile {
+    flex-direction: column;
+  }
+}

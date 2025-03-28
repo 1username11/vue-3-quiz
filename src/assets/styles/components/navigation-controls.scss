@@ -1,0 +1,39 @@
+@use '../variables/colors' as colors;
+@use '../mixins/responsive' as responsive;
+
+.navigation-controls {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  align-items: center;
+  margin-top: 2rem;
+
+  &__question-counter {
+    justify-self: center;
+    text-align: center;
+    font-weight: 500;
+  }
+
+  &__back-button,
+  &__next-button {
+    min-width: 80px;
+
+    @include responsive.mobile {
+      min-width: auto;
+      padding: 0.5rem 0.75rem;
+      font-size: 0.9rem;
+    }
+  }
+
+  &__back-button {
+    justify-self: start;
+  }
+
+  &__next-button {
+    justify-self: end;
+  }
+
+  @include responsive.mobile {
+    gap: 0.5rem;
+  }
+}

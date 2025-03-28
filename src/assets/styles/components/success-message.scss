@@ -1,0 +1,33 @@
+@use '../variables/colors' as colors;
+@use '../mixins/responsive' as responsive;
+@use '../mixins/_form-actions' as form-actions;
+
+.success-message {
+  text-align: center;
+  
+  &__icon {
+    font-size: 4rem;
+    color: colors.$success;
+    margin-bottom: 1rem;
+  }
+  
+  &__text {
+    margin-bottom: 1rem;
+    color: colors.$text-secondary;
+  }
+  
+  &__phone-number {
+    margin-bottom: 2rem;
+    padding: 1rem;
+    background-color: colors.$gray-100;
+    border-radius: 0.5rem;
+    
+    strong {
+      color: colors.$primary;
+    }
+  }
+  
+  &__action-container {
+    @include form-actions.action-container;
+  }
+}

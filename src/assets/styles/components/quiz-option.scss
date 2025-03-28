@@ -1,0 +1,105 @@
+@use '../variables/colors' as colors;
+@use '../mixins/shadows' as shadows;
+@use '../mixins/responsive' as responsive;
+@use 'sass:color';
+
+.quiz-option {
+  $self: &;
+  
+  width: 100%;
+  height: auto;
+  min-height: 60px;
+  padding: 1rem;
+  margin-bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  border-radius: 0.75rem;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  font-size: 1rem;
+  font-family: inherit;
+  outline: none;
+  border: 1px solid;
+  
+  &__text {
+    text-align: center;
+    width: 100%;
+    font-size: 1rem;
+  }
+  
+  &--selected {
+    transform: translateY(-3px);
+    @include shadows.shadow-lg;
+    border-color: colors.$text-secondary !important;
+    border-width: 2px;
+  }
+  
+  &--color-0 {
+    background-color: colors.$gray-100;
+    border-color: colors.$gray-100;
+    color: colors.$text-primary;
+    
+    &:hover {
+      background-color: colors.$gray-200;
+      border-color: colors.$gray-200;
+    }
+  }
+  
+  &--color-1 {
+    background-color: colors.$gray-200;
+    border-color: colors.$gray-200;
+    color: colors.$text-primary;
+    
+    &:hover {
+      background-color: colors.$gray-300;
+      border-color: colors.$gray-300;
+    }
+  }
+  
+  &--color-2 {
+    background-color: colors.$gray-300;
+    border-color: colors.$gray-300;
+    color: colors.$text-primary;
+    
+    &:hover {
+      background-color: color.adjust(colors.$gray-300, $lightness: -5%);
+      border-color: color.adjust(colors.$gray-300, $lightness: -5%);
+    }
+  }
+  
+  &:hover {
+    transform: translateY(-2px);
+    @include shadows.shadow-md;
+  }
+  
+  &--selected:hover {
+    transform: translateY(-1px);
+  }
+  
+  @include responsive.touch-device {
+    &:hover {
+      transform: none;
+      box-shadow: none;
+    }
+    
+    &:active {
+      transform: scale(0.98);
+    }
+  }
+  
+  @include responsive.tablet {
+    min-height: 50px;
+    padding: 0.75rem;
+  }
+
+  @include responsive.mobile {
+    min-height: 44px;
+    padding: 0.5rem;
+    font-size: 0.9rem;
+    border-radius: 0.5rem;
+  }
+}

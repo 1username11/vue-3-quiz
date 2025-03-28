@@ -1,0 +1,98 @@
+@use './variables/typography' as typography-vars;
+@use './variables/colors' as colors;
+
+body {
+  font-family: typography-vars.$font-family-base;
+  font-size: typography-vars.$font-size-base;
+  line-height: typography-vars.$line-height-normal;
+  color: colors.$text-primary;
+}
+
+.title {
+  font-family: typography-vars.$font-family-heading;
+  font-weight: typography-vars.$font-weight-bold;
+  line-height: typography-vars.$line-height-tight;
+  color: colors.$text-primary;
+  
+  &-2 {
+    @extend .title;
+    font-size: typography-vars.$font-size-2xl;
+    
+    @media (max-width: 768px) {
+      font-size: typography-vars.$font-size-xl;
+    }
+  }
+  
+  &-3 {
+    @extend .title;
+    font-size: typography-vars.$font-size-xl;
+    
+    @media (max-width: 768px) {
+      font-size: typography-vars.$font-size-lg;
+    }
+  }
+}
+
+.subtitle {
+  font-family: typography-vars.$font-family-base;
+  font-weight: typography-vars.$font-weight-medium;
+  line-height: typography-vars.$line-height-normal;
+  color: colors.$text-secondary;
+  
+  &-1 {
+    @extend .subtitle;
+    font-size: typography-vars.$font-size-lg;
+    
+    @media (max-width: 768px) {
+      font-size: typography-vars.$font-size-md;
+    }
+  }
+  
+  &-2 {
+    @extend .subtitle;
+    font-size: typography-vars.$font-size-md;
+    
+    @media (max-width: 768px) {
+      font-size: typography-vars.$font-size-base;
+    }
+  }
+}
+
+.text-base {
+  font-size: typography-vars.$font-size-base;
+  line-height: typography-vars.$line-height-normal;
+}
+
+.text-sm {
+  font-size: typography-vars.$font-size-sm;
+  line-height: typography-vars.$line-height-normal;
+}
+
+.text-xs {
+  font-size: typography-vars.$font-size-xs;
+  line-height: typography-vars.$line-height-normal;
+}
+
+.text-muted {
+  color: colors.$text-muted;
+}
+
+.font-light {
+  font-weight: typography-vars.$font-weight-light;
+}
+
+.font-normal {
+  font-weight: typography-vars.$font-weight-normal;
+}
+
+.font-medium {
+  font-weight: typography-vars.$font-weight-medium;
+}
+
+.font-semibold {
+  font-weight: typography-vars.$font-weight-semibold;
+}
+
+.font-bold {
+  font-weight: typography-vars.$font-weight-bold;
+}

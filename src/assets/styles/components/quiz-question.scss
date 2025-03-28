@@ -1,0 +1,36 @@
+@use '../variables/colors' as colors;
+@use '../mixins/responsive' as responsive;
+
+.quiz-question {
+  &__header {
+    margin-bottom: 2rem;
+    
+    h2 {
+      font-size: 1.5rem;
+
+      @include responsive.mobile {
+        font-size: 1.25rem;
+      }
+    }
+
+    p {
+      font-size: 1.25rem;
+
+      @include responsive.mobile {
+        font-size: 1rem;
+        margin-bottom: 1rem;
+      }
+    }
+  }
+  
+  &__options {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    max-width: 100%;
+    
+    @include responsive.mobile {
+      gap: 0.5rem;
+    }
+  }
+}

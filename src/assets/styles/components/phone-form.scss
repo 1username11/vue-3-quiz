@@ -1,0 +1,71 @@
+@use '../variables/colors' as colors;
+@use '../mixins/responsive' as responsive;
+@use '../mixins/_form-actions' as form-actions;
+
+.phone-form {
+  &__description {
+    margin-bottom: 1.5rem;
+    color: colors.$text-secondary;
+  }
+
+  &__form-group {
+    margin-bottom: 1.5rem;
+  }
+
+  &__label {
+    display: block;
+    margin-bottom: 0.5rem;
+  }
+
+  &__input-container {
+    position: relative;
+    margin-bottom: 1.5rem;
+    
+    .phone-form__error-message {
+      position: absolute;
+      top: 35px;
+      left: 0;
+      right: 0;
+      margin-top: 0.25rem;
+      padding: 0.5rem;
+      z-index: 10;
+    }
+  }
+
+  &__error-message {
+    color: colors.$error;
+    padding: 0.25rem 0;
+    
+    &:not(:last-child) {
+      border-bottom: 1px solid rgba(colors.$error, 0.2);
+      margin-bottom: 0.25rem;
+    }
+  }
+
+  &__form-actions {
+    @include form-actions.form-actions;
+  }
+}
+
+:deep(.vue-tel-input) {
+  border-radius: 0.75rem !important;
+  border: 1px solid colors.$gray-300;
+  
+  &:focus-within {
+    border-color: transparent;
+    box-shadow: 0 4px 12px rgba(colors.$primary, 0.25);
+  }
+}
+
+:deep(.vti__dropdown) {
+  border-radius: 0.75rem 0 0 0.75rem !important;
+  border: none;
+  background-color: colors.$gray-100;
+}
+
+:deep(.vti__input) {
+  background-color: white;
+  border: none;
+  border-radius: 0 0.75rem 0.75rem 0 !important;
+  padding: 0.75rem;
+}

@@ -1,0 +1,23 @@
+@use '../mixins/responsive' as responsive;
+
+@mixin quiz-layout {
+  max-width: 500px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  transition: all 0.3s ease;
+  
+  &__container {
+    max-width: 500px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    transition: all 0.3s ease;
+  }
+  
+  @media (max-width: 1200px) {
+    margin: 0 auto;
+  }
+}
