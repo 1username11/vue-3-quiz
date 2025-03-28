@@ -9,8 +9,8 @@ const showNotification = (title: string, message: string, type: 'success' | 'war
     title,
     message,
     type,
-    duration: 0, // Set to 0 to make notifications persist until manually closed
-    showClose: true // Ensure the close button is visible
+    duration: 0,
+    showClose: true
   })
 }
 
@@ -157,14 +157,11 @@ export const useQuizStore = defineStore('quiz', () => {
         throw new Error('Quiz is undefined')
       }
 
-      const quizValue = quiz.value as IQuiz // Type assertion to satisfy TypeScript
-
       const answers: IQuestionAnswer[] = userAnswers.value.map((answer, index) => {
         if (answer === undefined) {
           throw new Error(`Answer for question ${index + 1} is undefined`)
         }
 
-        // Using a default value of 0 if quiz or questions are undefined
         const questionId = quiz.value?.questions?.[index]?.id ?? 0
 
         return {
@@ -173,7 +170,6 @@ export const useQuizStore = defineStore('quiz', () => {
         }
       })
 
-      // Using a default value of 0 if quiz is undefined
       const quizId = quiz.value?.id ?? 0
 
       const submission: IQuizSubmission = {
