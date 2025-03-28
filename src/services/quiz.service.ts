@@ -1,7 +1,5 @@
 import type { IQuiz, IQuizSubmission } from '@/types/quiz'
 
-// Sample quiz data
-
 const sampleQuizzes: IQuiz[] = [
   {
     id: 1,

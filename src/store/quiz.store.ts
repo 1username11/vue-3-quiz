@@ -8,7 +8,9 @@ const showNotification = (title: string, message: string, type: 'success' | 'war
   ElNotification({
     title,
     message,
-    type
+    type,
+    duration: 0, // Set to 0 to make notifications persist until manually closed
+    showClose: true // Ensure the close button is visible
   })
 }
 
@@ -27,15 +29,18 @@ export const useQuizStore = defineStore('quiz', () => {
     return quiz.value.questions[currentQuestionIndex.value]
   })
 
-  const isLastQuestion = computed(() => {
+  const isLastQuestion = computed<boolean>(() => {
     if (!quiz.value) return false
     return currentQuestionIndex.value === quiz.value.questions.length - 1
   })
 
-  const totalQuestions = computed(() => quiz.value?.questions.length || 0)
+  const totalQuestions = computed<number>(() => {
+    if (!quiz.value) return 0
+    return quiz.value.questions.length
+  })
 
   const filteredAnswers = computed(() => {
-    return userAnswers.value.filter((answer) => answer !== undefined) as number[]
+    return userAnswers.value.filter((answer): answer is number => answer !== undefined)
   })
 
   const hasAllQuestionsAnswered = computed(() => {
@@ -43,7 +48,6 @@ export const useQuizStore = defineStore('quiz', () => {
     return filteredAnswers.value.length === quiz.value.questions.length
   })
 
-  // Helper functions
   const resetQuizState = () => {
     if (!quiz.value) return
     userAnswers.value = new Array(quiz.value.questions.length).fill(undefined)
@@ -58,116 +62,134 @@ export const useQuizStore = defineStore('quiz', () => {
     showNotification('Validation Error', message)
   }
 
-  // Actions
-  async function loadQuiz () {
-    isInitialLoading.value = true
+  const loadQuiz = async () => {
     try {
+      isInitialLoading.value = true
       const quizzes = await quizService.getQuizzes()
-      if (quizzes.length > 0) {
-        quiz.value = quizzes[0]
-        resetQuizState()
+
+      if (quizzes.length === 0) {
+        showNotification('Error', 'No quizzes available')
+        return
       }
+
+      quiz.value = quizzes[0]
+      resetQuizState()
     } catch (error) {
-      console.error('Failed to load quiz:', error)
-      showNotification('Error', 'Failed to load quiz. Please try again.')
+      console.error('Error loading quiz:', error)
+      showNotification('Error', 'Failed to load quiz')
     } finally {
       isInitialLoading.value = false
     }
   }
 
-  function handleOptionSelected (index: number | null) {
-    userAnswers.value[currentQuestionIndex.value] = index === null ? undefined : index
+  const handleOptionSelected = (index: number | null) => {
+    userAnswers.value[currentQuestionIndex.value] = index ?? undefined
   }
 
-  function goToNextQuestion (): boolean {
+  const goToNextQuestion = (): boolean => {
     if (userAnswers.value[currentQuestionIndex.value] === undefined) {
       return false
     }
 
     if (isLastQuestion.value) {
-      quizCompleted.value = true
       calculateFinalScore()
-    } else {
-      currentQuestionIndex.value++
+      quizCompleted.value = true
+      return true
     }
 
+    currentQuestionIndex.value++
     return true
   }
 
-  function goToPreviousQuestion () {
+  const goToPreviousQuestion = () => {
     if (currentQuestionIndex.value > 0) {
       currentQuestionIndex.value--
     }
   }
 
-  function calculateFinalScore () {
+  const calculateFinalScore = () => {
     if (!quiz.value) return
 
-    const correctAnswers = quiz.value.questions.reduce((count, question, index) => {
-      const userAnswer = userAnswers.value[index]
-      return (userAnswer !== undefined && userAnswer === question.correctOptionIndex)
-        ? count + 1
-        : count
-    }, 0)
+    let correctAnswers = 0
+    quiz.value.questions.forEach((question, index) => {
+      if (userAnswers.value[index] === question.correctOptionIndex) {
+        correctAnswers++
+      }
+    })
 
-    score.value = Math.round((correctAnswers / quiz.value.questions.length) * 100)
+    score.value = correctAnswers
   }
 
-  function restartQuiz () {
+  const restartQuiz = () => {
     resetQuizState()
   }
 
-  function validateQuizSubmission (): boolean {
+  const validateQuizSubmission = (): boolean => {
     validationErrors.value = []
 
     if (!quiz.value) {
-      addValidationError('Quiz data not loaded')
+      addValidationError('No quiz loaded')
       return false
     }
 
     if (!hasAllQuestionsAnswered.value) {
-      const unansweredCount = quiz.value.questions.length - filteredAnswers.value.length
-      addValidationError(`You have ${unansweredCount} unanswered question(s)`)
+      addValidationError('Please answer all questions before submitting')
       return false
     }
 
-    return true
+    return validationErrors.value.length === 0
   }
 
-  async function submitResults (submittedPhoneNumber: string): Promise<boolean> {
+  const submitResults = async (submittedPhoneNumber: string): Promise<boolean> => {
     if (!validateQuizSubmission()) {
       return false
     }
 
-    if (!submittedPhoneNumber || submittedPhoneNumber.trim() === '') {
-      addValidationError('Phone number is required')
+    if (!quiz.value) {
+      showNotification('Error', 'No quiz loaded')
       return false
     }
 
-    isLoading.value = true
-
     try {
+      isLoading.value = true
+
       if (!quiz.value) {
-        throw new Error('Quiz not loaded')
+        throw new Error('Quiz is undefined')
       }
 
-      const answers: IQuestionAnswer[] = quiz.value.questions
-        .map((question, index) => {
-          const answer = userAnswers.value[index]
-          return answer !== undefined ? {
-            questionId: question.id,
-            answer
-          } : null
-        })
-        .filter((item): item is IQuestionAnswer => item !== null)
+      const quizValue = quiz.value as IQuiz // Type assertion to satisfy TypeScript
+
+      const answers: IQuestionAnswer[] = userAnswers.value.map((answer, index) => {
+        if (answer === undefined) {
+          throw new Error(`Answer for question ${index + 1} is undefined`)
+        }
+
+        // Using a default value of 0 if quiz or questions are undefined
+        const questionId = quiz.value?.questions?.[index]?.id ?? 0
+
+        return {
+          questionId,
+          answer
+        }
+      })
+
+      // Using a default value of 0 if quiz is undefined
+      const quizId = quiz.value?.id ?? 0
 
       const submission: IQuizSubmission = {
-        quizId: quiz.value.id,
-        phoneNumber: submittedPhoneNumber.trim(),
+        quizId,
+        phoneNumber: submittedPhoneNumber,
         answers
       }
 
       const result = await quizService.submitResults(submission)
+
+      if (result.success) {
+        showNotification('Success', 'Quiz results submitted successfully', 'success')
+      } else {
+        showNotification('Error', 'Failed to submit quiz results')
+      }
+
       return result.success
     } catch (error) {
       console.error('Error submitting quiz results:', error)
@@ -179,7 +201,6 @@ export const useQuizStore = defineStore('quiz', () => {
   }
 
   return {
-    // State
     quiz,
     currentQuestionIndex,
     userAnswers,
@@ -189,14 +210,12 @@ export const useQuizStore = defineStore('quiz', () => {
     isInitialLoading,
     validationErrors,
 
-    // Getters
     currentQuestion,
     isLastQuestion,
     totalQuestions,
     filteredAnswers,
     hasAllQuestionsAnswered,
 
-    // Actions
     loadQuiz,
     handleOptionSelected,
     goToNextQuestion,
